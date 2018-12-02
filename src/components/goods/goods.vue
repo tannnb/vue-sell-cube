@@ -5,15 +5,13 @@
         :side=true
         :data="goods"
         :options="scrollOptions"
-        v-if="goods.length"
-      >
+        v-if="goods.length">
         <template slot="bar" slot-scope="props">
           <cube-scroll-nav-bar
             direction="vertical"
             :labels="props.labels"
             :txts="barTxts"
-            :current="props.current"
-          >
+            :current="props.current">
             <template slot-scope="props">
               <div class="text">
                 <support-ico
