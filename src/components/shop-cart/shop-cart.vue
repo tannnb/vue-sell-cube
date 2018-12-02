@@ -67,11 +67,16 @@
       minPrice: {
         type: Number,
         default: 0
+      },
+      Fold: {
+        type: Boolean,
+        default: true
       }
     },
     data() {
       return {
-        balls: createBalls()
+        balls: createBalls(),
+        listFold: this.Fold
       }
     },
     components: {
@@ -112,7 +117,6 @@
     },
     created() {
       this.dropBalls = []
-      this.listFold = true
     },
     methods: {
       drop(el) {
@@ -161,6 +165,7 @@
           }
           this.listFold = false
           this._showShopCartList()
+          this._showShopCartSticky()
         } else {
           this.listFold = true
           this._hideShopCartList()
@@ -178,6 +183,17 @@
           }
         })
         this.shopCartListComp.show()
+      },
+      _showShopCartSticky() {
+        this.shopCartStickyComp = this.shopCartStickyComp || this.$createShopCartSticky({
+           $props: {
+             selectFoods: 'selectFoods',
+             deliveryPrice: 'deliveryPrice',
+             minPrice: 'minPrice',
+             Fold: 'listFold'
+           }
+        })
+        this.shopCartStickyComp.show()
       },
       _hideShopCartList() {
         this.shopCartListComp.hide()
