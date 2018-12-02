@@ -62,11 +62,15 @@
         </cube-scroll-nav-panel>
       </cube-scroll-nav>
     </div>
+    <div class="shop-cart-wrapper">
+      <shop-cart></shop-cart>
+    </div>
   </div>
 </template>
 
 <script>
   import { getGoods } from 'api'
+  import ShopCart from 'components/shop-cart/shop-cart'
 
   export default {
     name: 'goods',
@@ -77,6 +81,9 @@
           return {}
         }
       }
+    },
+    components: {
+      ShopCart
     },
     data() {
       return {
