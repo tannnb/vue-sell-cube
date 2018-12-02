@@ -7,7 +7,7 @@
         :options="scrollOptions"
         v-if="goods.length"
       >
-        <template slot="bar" slot-scope="props">
+       <!-- <template slot="bar" slot-scope="props">
           <cube-scroll-nav-bar
             direction="vertical"
             :labels="props.labels"
@@ -15,19 +15,19 @@
           >
             <template slot-scope="props">
               <div class="text">
-                <support-ico
+               &lt;!&ndash; <support-ico
                   v-if="props.txt.type>=1"
                   :size=3
                   :type="props.txt.type"
-                ></support-ico>
+                ></support-ico>&ndash;&gt;
                 <span>{{props.txt.name}}</span>
                 <span class="num" v-if="props.txt.count">
-                <!--  <bubble :num="props.txt.count"></bubble>-->
+                &lt;!&ndash;  <bubble :num="props.txt.count"></bubble>&ndash;&gt;
                 </span>
               </div>
             </template>
           </cube-scroll-nav-bar>
-        </template>
+        </template>-->
         <cube-scroll-nav-panel
           v-for="good in goods"
           :key="good.name"
@@ -36,7 +36,6 @@
         >
           <ul>
             <li
-              @click="selectFood(food)"
               v-for="food in good.foods"
               :key="food.name"
               class="food-item"
@@ -67,10 +66,10 @@
 </template>
 
 <script>
-  import {getGoods} from 'api'
+  import { getGoods } from 'api'
 
   export default {
-    name: "goods",
+    name: 'goods',
     props: {
       data: {
         type: Object,
@@ -93,6 +92,7 @@
       fetch() {
         getGoods().then(goods => {
             this.goods = goods
+          console.log(goods)
         })
       }
     }

@@ -35,11 +35,15 @@
         default() {
           return []
         }
+      },
+      initialIndex: {
+        type: Number,
+        default: 0
       }
     },
     data() {
       return {
-        index: 0,
+        index: this.initialIndex,
         slideOptions: {
           listenScroll: true,
           probeType: 3,
@@ -71,6 +75,7 @@
       onScroll(pos) {
         const tabBarWidth = this.$refs.tabBar.$el.clientWidth
         const slideWidth = this.$refs.slide.slide.scrollerWidth
+        // 根据slide比例 算出tabBar的滚动比例
         const tranform = -pos.x / slideWidth * tabBarWidth
         this.$refs.tabBar.setSliderTransform(tranform)
       }
