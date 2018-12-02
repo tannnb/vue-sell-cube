@@ -54,7 +54,7 @@
                   <span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                 </div>
                 <div class="cart-control-wrapper">
-               <!--   <cart-control @add="onAdd" :food="food"></cart-control>-->
+                  <cart-control  :food="food"></cart-control>
                 </div>
               </div>
             </li>
@@ -63,7 +63,11 @@
       </cube-scroll-nav>
     </div>
     <div class="shop-cart-wrapper">
-      <shop-cart></shop-cart>
+      <shop-cart
+        :select-foods="selectFoods"
+        :delivery-price="seller.deliveryPrice"
+        :min-price="seller.minPrice"
+      ></shop-cart>
     </div>
   </div>
 </template>
@@ -71,6 +75,7 @@
 <script>
   import { getGoods } from 'api'
   import ShopCart from 'components/shop-cart/shop-cart'
+  import CartControl from 'components/cart-control/cart-control'
 
   export default {
     name: 'goods',
@@ -83,7 +88,8 @@
       }
     },
     components: {
-      ShopCart
+      ShopCart,
+      CartControl
     },
     data() {
       return {
@@ -93,6 +99,23 @@
           click: false,
           directionLockThreshold: 0
         }
+      }
+    },
+    computed: {
+      seller() {
+        return this.data.seller
+      },
+      selectFoods() {
+        // 找出有选择数量的商品
+        let ret = []
+        this.goods.forEach(good => {
+          good.foods.forEach(food => {
+            if (food.count) {
+              ret.push(food)
+            }
+          })
+        })
+        return ret
       }
     },
     methods: {
