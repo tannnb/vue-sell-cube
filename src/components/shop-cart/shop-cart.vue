@@ -71,6 +71,10 @@
       Fold: {
         type: Boolean,
         default: true
+      },
+      sticky: {
+        type: Boolean,
+        default: false
       }
     },
     data() {
@@ -179,6 +183,9 @@
           $events: {
             hide: () => {
               this.listFold = true
+            },
+            leave: () => {
+              this._hideShopCartSticky()
             }
           }
         })
@@ -190,13 +197,23 @@
              selectFoods: 'selectFoods',
              deliveryPrice: 'deliveryPrice',
              minPrice: 'minPrice',
-             Fold: 'listFold'
+             Fold: 'listFold',
+             list: this.shopCartListComp
            }
         })
         this.shopCartStickyComp.show()
       },
       _hideShopCartList() {
-        this.shopCartListComp.hide()
+        const comp = this.sticky ? this.$parent.list : this.shopCartListComp
+        comp.hide && comp.hide()
+      },
+      _hideShopCartSticky() {
+        this.shopCartStickyComp.hide()
+      }
+    },
+    watch: {
+      Fold(newValue) {
+        this.listFold = newValue
       }
     }
   }

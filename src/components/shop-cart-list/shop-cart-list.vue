@@ -72,7 +72,7 @@
         this.hide()
       },
       afterLeave() {
-
+        this.$emit('leave')
       },
       empty() {
 

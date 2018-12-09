@@ -6,6 +6,7 @@
       :deliveryPrice="deliveryPrice"
       :minPrice="minPrice"
       :Fold="Fold"
+      :sticky=true
     ></shop-cart>
   </div>
 </template>
@@ -38,6 +39,12 @@ export default {
     Fold: {
       type: Boolean,
       default: true
+    },
+    list: {
+      type: Object,
+      default: function () {
+        return {}
+      }
     }
   },
   data() {
