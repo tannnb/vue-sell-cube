@@ -38,6 +38,7 @@
               v-for="food in good.foods"
               :key="food.name"
               class="food-item"
+              @click="selectFood(food)"
             >
               <div class="icon">
                 <img width="57" height="57" :src="food.icon">
@@ -139,14 +140,52 @@
       }
     },
     methods: {
+      selectFood(food) {
+        this.selectedFood = food
+        this._showFood()
+        this._showShopCartSticky()
+      },
       onAdd(el) {
         this.$refs.shopCart.drop(el)
       },
       fetch() {
-        getGoods().then(goods => {
+        // 防止多次请求
+        if (!this.fetched) {
+          this.fetched = true
+          getGoods().then(goods => {
             this.goods = goods
-          console.log(goods)
+          })
+        }
+      },
+      _showFood() {
+        this.foodComp = this.foodComp || this.$createFood({
+          $props: {
+            food: 'selectedFood'
+          },
+          $events: {
+            leave: () => {
+              this._hideShopCartList()
+            },
+            add: (el) => {
+              this.shopCartStickyComp.drop(el)
+            }
+          }
         })
+        this.foodComp.show()
+      },
+      _showShopCartSticky() {
+        this.shopCartStickyComp = this.shopCartStickyComp || this.$createShopCartSticky({
+          $props: {
+            selectFoods: 'selectFoods',
+            deliveryPrice: this.seller.deliveryPrice,
+            minPrice: this.seller.minPrice,
+            Fold: true
+          }
+        })
+        this.shopCartStickyComp.show()
+      },
+      _hideShopCartList() {
+        this.shopCartStickyComp.hide()
       }
     }
   }

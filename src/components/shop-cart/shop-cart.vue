@@ -15,7 +15,7 @@
           <div class="desc">另需配送费¥{{deliveryPrice}}元</div>
         </div>
         <div class="content-right">
-          <div class="pay" :class="payClass">{{payDesc}}</div>
+          <div class="pay" @click="pay" :class="payClass">{{payDesc}}</div>
         </div>
       </div>
       <div class="ball-container">
@@ -186,6 +186,9 @@
             },
             leave: () => {
               this._hideShopCartSticky()
+            },
+            add: (el) => {
+              this.shopCartStickyComp.drop(el)
             }
           }
         })
@@ -209,11 +212,27 @@
       },
       _hideShopCartSticky() {
         this.shopCartStickyComp.hide()
+      },
+      pay(e) {
+        if (this.totalPrice < this.minPrice) {
+          return
+        }
+        this.$createDialog({
+          title: '支付',
+          content: `支付${this.totalPrice}元`
+        }).show()
+        e.stopPropagation()
       }
     },
     watch: {
       Fold(newValue) {
         this.listFold = newValue
+      },
+      totalCount(newValue) {
+        // 当shop-list没有商品了，关闭shop-list
+        if (!this.listFold && !newValue) {
+          this._hideShopCartList()
+        }
       }
     }
   }

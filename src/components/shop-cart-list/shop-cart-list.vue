@@ -63,6 +63,9 @@
     methods: {
       show() {
         this.visible = true
+        this.$nextTick(() => {
+          this.$refs.listContent.refresh()
+        })
       },
       hide() {
         this.visible = false
@@ -75,10 +78,22 @@
         this.$emit('leave')
       },
       empty() {
-
+        this.$createDialog({
+          type: 'confirm',
+          title: '清空购物车',
+          content: '确认清空吗？',
+          $events: {
+            confirm: () => {
+              this.selectFoods.forEach(food => {
+                food.count = 0
+              })
+              this.hide()
+            }
+          }
+        }).show()
       },
-      onAdd() {
-
+      onAdd(target) {
+        this.$emit('add', target)
       }
     }
   }
