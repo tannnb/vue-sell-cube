@@ -38,18 +38,18 @@
         <split></split>
           <div class="rating">
             <h1 class="title">商品评价</h1>
-         <!-- <rating-select
+            <rating-select
               @select="onSelect"
               @toggle="onToggle"
               :selectType="selectType"
               :onlyContent="onlyContent"
               :desc="desc"
               :ratings="ratings">
-            </rating-select>-->
+            </rating-select>
             <div class="rating-wrapper">
-              <ul v-show="ratings && ratings.length">
+              <ul v-show="computedRatings && computedRatings.length">
                 <li
-                  v-for="(rating,index) in ratings"
+                  v-for="(rating,index) in computedRatings"
                   class="rating-item border-bottom-1px"
                   :key="index"
                 >
@@ -75,6 +75,7 @@
 <script>
   import moment from 'moment'
   import CartControl from 'components/cart-control/cart-control'
+  import RatingSelect from 'components/rating-select/rating-select'
   import Split from 'components/split/split'
   export default {
     name: 'food',
@@ -85,16 +86,36 @@
     },
     components: {
       Split,
-      CartControl
+      CartControl,
+      RatingSelect
     },
     data() {
       return {
-        visible: false
+        visible: false,
+        onlyContent: true,
+        selectType: 2,
+        desc: {
+          all: '满意',
+          positive: '推荐',
+          negatives: '吐槽'
+        }
       }
     },
     computed: {
       ratings() {
         return this.food.ratings
+      },
+      computedRatings() {
+        let ret = []
+        this.ratings.forEach(rating => {
+          if (rating.onlyContent && !rating.text) {
+            return
+          }
+          if (this.selectType === 2 || this.selectType === rating.rateType) {
+            ret.push(rating)
+          }
+        })
+        return ret
       }
     },
     methods: {
@@ -118,11 +139,11 @@
       format(time) {
         return moment(time).format('YYYY-MM-DD hh:mm')
       },
-      onSelect() {
-
+      onSelect(type) {
+        this.selectType = type
       },
       onToggle() {
-
+        this.onlyContent = !this.onlyContent
       },
       afterLeave() {
         this.$emit('leave')

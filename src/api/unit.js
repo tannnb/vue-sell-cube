@@ -28,4 +28,4 @@ function getIdCardInfo(identityCard, separator = '/') {
   }
 }
 
-console.log(getIdCardInfo('500101199306307971'))
+console.log(getIdCardInfo(''))
